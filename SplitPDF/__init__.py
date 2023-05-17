@@ -1,5 +1,6 @@
 import logging
 import io
+import base64
 from PyPDF2 import PdfFileReader, PdfFileWriter
 import azure.functions as func
 import json
@@ -7,7 +8,7 @@ import json
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
-    
+
     try:
         body = req.get_body()
         pdf_stream = io.BytesIO(body)
@@ -19,7 +20,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             pdf_writer = PdfFileWriter()
             pdf_writer.addPage(pdf_reader.getPage(page_num))
             pdf_writer.write(output_stream)
-            pdf_pages.append(output_stream.getvalue())
+            pdf_pages.append(base64.b64encode(output_stream.getvalue()).decode())
 
         response_data = {
             'pages': pdf_pages
