@@ -1,13 +1,14 @@
 import logging
 import io
-from PyPDF2 import PdfFileReader, PdfFileWriter
+from PyPDF2 import PdfFileReader
 import azure.functions as func
 import json
 
+
 def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
-
-        try:
+    
+    try:
         body = req.get_body()
         pdf_stream = io.BytesIO(body)
         pdf_reader = PdfFileReader(pdf_stream)
