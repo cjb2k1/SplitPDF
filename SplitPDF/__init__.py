@@ -4,7 +4,7 @@ import tempfile
 from PyPDF2 import PdfFileReader, PdfFileWriter
 import azure.functions as func
 
-def splitpdf(req: func.HttpRequest) -> func.HttpResponse:
+def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
 
     # Get the binary PDF data from the request body
