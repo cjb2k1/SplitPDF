@@ -2,11 +2,12 @@ import logging
 import io
 from PyPDF2 import PdfFileReader, PdfFileWriter
 import azure.functions as func
+import json
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
 
-    try:
+        try:
         body = req.get_body()
         pdf_stream = io.BytesIO(body)
         pdf_reader = PdfFileReader(pdf_stream)
@@ -19,10 +20,15 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             pdf_writer.write(output_stream)
             pdf_pages.append(output_stream.getvalue())
 
-        return func.HttpResponse(body=pdf_pages, mimetype='application/octet-stream')
+        response_data = {
+            'pages': pdf_pages
+        }
+
+        return func.HttpResponse(
+            body=json.dumps(response_data),
+            mimetype='application/json'
+        )
 
     except Exception as e:
         logging.error(str(e))
         return func.HttpResponse('An error occurred.', status_code=500)
-
-
