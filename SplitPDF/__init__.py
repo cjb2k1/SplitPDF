@@ -1,6 +1,6 @@
 import logging
 import io
-from PyPDF2 import PdfFileReader
+from PyPDF2 import PdfFileReader, PdfFileWriter
 import azure.functions as func
 import json
 
