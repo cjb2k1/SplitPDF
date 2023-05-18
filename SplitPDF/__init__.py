@@ -2,7 +2,7 @@ import logging
 import io
 import base64
 import json
-from PyPDF2 import PdfFileReader, PdfFileWriter
+from PyPDF2 import PdfReader, PdfWriter
 import azure.functions as func
 
 
@@ -12,13 +12,13 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     try:
         body = req.get_body()
         pdf_stream = io.BytesIO(body)
-        pdf_reader = PdfFileReader(pdf_stream, strict=False)
+        pdf_reader = PdfReader(pdf_stream)
 
         pdf_pages = []
-        for page_num in range(pdf_reader.numPages):
+        for page_num in range(len(pdf_reader.pages)):
             output_stream = io.BytesIO()
-            pdf_writer = PdfFileWriter()
-            pdf_writer.addPage(pdf_reader.getPage(page_num))
+            pdf_writer = PdfWriter()
+            pdf_writer.add_page(pdf_reader.pages[page_num])
             pdf_writer.write(output_stream)
             pdf_pages.append(base64.b64encode(output_stream.getvalue()).decode())
 
