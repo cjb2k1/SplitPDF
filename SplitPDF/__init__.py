@@ -15,10 +15,10 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         pdf_reader = PdfReader(pdf_stream)
 
         pdf_pages = []
-        for page_num in range(pdf_reader.getNumPages()):
+        for page_num in range(len(pdf_reader.pages)):
             output_stream = io.BytesIO()
             pdf_writer = PdfWriter()
-            pdf_writer.addPage(pdf_reader.getPage(page_num))
+            pdf_writer.add_Page(pdf_reader.getPage(page_num))
             pdf_writer.write(output_stream)
             pdf_pages.append(base64.b64encode(output_stream.getvalue()).decode())
 
