@@ -4,3 +4,5 @@
 
 azure-functions
 PyPDF2==3.0.1
+opencv-python-headless==4.8.0.74
+numpy==1.25.0
